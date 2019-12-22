@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+  <style>
+    header {
+      background-color: rgb(189, 92, 253);
+      padding: 5px 40px;
+    }
+
+    .back {
+      background-color: rgb(243, 238, 247);
+      margin: 0;
+    }
+
+    h1 {
+      padding: 40px 0 10px;
+      font-size: 90px;
+      font-family: Arial, Helvetica, sans-serif;
+      font-weight: bold;
+      color: white;
+    }
+
+    .explanation {
+      border-top: 4px solid;
+      border-bottom: 4px solid;
+      padding: 6px 0;
+      color: #F0EDEB;
+    }
+
+    .number {
+      margin-bottom: 15px;
+      border-top: 4px solid #b5b6b8;
+      padding: 6px;
+      color: rgb(107, 106, 105);
+    }
+
+    .number p {
+      margin: 10px 0 20px 20px;
+      font-size: 25px;
+      color: rgb(107, 106, 105);
+    }
+
+    .input-group {
+      margin: 0 auto;
+      width: 40%;
+    }
+
+    .button {
+      margin: 2px auto;
+      text-align: center;
+      width: 160px;
+    }
+
+    .img-pre {
+      text-align: center;
+    }
+
+    #preview {
+      margin: 30px;
+      width: 50%;
+      height: 50%;
+    }
+
+    .img-res1 {
+      margin: auto;
+      border-top: 4px solid #b5b6b8;
+      color: #fff;
+    }
+
+    #result {
+      margin: 10px 0 20px 20px;
+      width: 50%;
+      height: 50%;
+    }
+
+    .img-res1 p {
+      margin: 10px 0 20px 20px;
+      font-size: 25px;
+      color: rgb(107, 106, 105);
+    }
+
+    .img-res1-1 {
+      text-align: center;
+    }
+  </style>
+  <title>円形</title>
+</head>
+
+<body>
+  <header>
+    <h1>ピザとかケーキを人数分切り分けるやつ</h1>
+    <p class="explanation">ピザやケーキなどの円形の食べ物を人数分切り分けるためのwebアプリです。人数を選択して、円形の画像を選ぶとその人数分だけ等分された画像が表示されます。</p>
+  </header>
+  <div class="back">
+    <form method="post" action="/send" enctype="multipart/form-data">
+      <div class="number">
+        <p>人数を選んでね</p>
+        <div class="input-group mb-3 input-group-lg">
+          <input type="number" name="number" class="form-control" min="2" value="2" size="10" maxlength="2">
+          <div class="input-group-append input-group-lg">
+            <span class="input-group-text">人</span>
+          </div>
+        </div>
+      </div>
+      <div class="number">
+        <p>画像を選んでね</p>
+        <div class="input-group mb-3 input-group-lg">
+          <div class="custom-file input-group-lg">
+            <input type="file" class="custom-file-input" id="img_file" name="img_file" accept="image/*">
+            <label class="custom-file-label" for="inputGroupFile02" data-browse="参照"
+              aria-describedby="inputGroupFileAddon02">画像を選択</label>
+          </div>
+        </div>
+        <div class="img-pre"><img id="preview"></div>
+        <script>
+          const target = document.getElementById('img_file');
+          target.addEventListener('change', function (e) {
+            const file = e.target.files[0]
+            const reader = new FileReader();
+            reader.onload = function (e) {
+              const img = document.getElementById("preview")
+              img.src = e.target.result;
+            }
+            reader.readAsDataURL(file);
+          }, false);
+        </script>
+      </div>
+      <div class="button"><button type="submit" class="btn btn-info">結果を表示</button></div>
+    </form>
+    <p>
+      {% if gray_img_url %}
+      <div class="img-res1">
+        <p>こんな感じ。</p>
+        <div class="img-res1-1"><img id="result" src="{{ gray_img_url }}"></div>
+      </div>
+      {% endif %}
+    </p>
+  </div>
+</body>
+
+</html>
